@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recipe Finder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+        }
+        .header {
+            background: #ff7e5f;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto 30px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .search-box {
+            width: 70%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+        }
+        .search-button {
+            background: #ff7e5f;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin-left: 10px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .search-button:hover {
+            background: #feb47b;
+        }
+        .recipes-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .recipe-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 250px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .recipe-card:hover {
+            transform: translateY(-5px);
+        }
+        .recipe-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        .recipe-info {
+            padding: 15px;
+            text-align: center;
+        }
+        .recipe-info h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+        .login-section {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .login-section a {
+            color: #ff7e5f;
+            text-decoration: none;
+            font-weight: bold;
+            margin-left: 15px;
+        }
+        .login-section a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-section">
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('signup') }}">Sign Up</a>
+    </div>
+
+    <div class="header">
+        <h1>Recipe Finder</h1>
+        <p>Discover delicious recipes for any occasion</p>
+    </div>
+
+    <div class="search-container">
+        <form method="POST" action="/">
+            <input type="text" name="search_query" class="search-box" placeholder="Search for recipes..." value="{{ search_query }}">
+            <button type="submit" class="search-button">Search</button>
+        </form>
+    </div>
+
+    <div class="recipes-container">
+        {% for recipe in recipes %}
+        <div class="recipe-card">
+            <a href="/recipe/{{ recipe.id }}?search_query={{ search_query|urlencode }}">
+                <img src="{{ recipe.image or 'https://via.placeholder.com/300x200?text=No+Image' }}" alt="{{ recipe.title }}">
+                <div class="recipe-info"><h3>{{ recipe.title }}</h3></div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
