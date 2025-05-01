@@ -3,12 +3,28 @@ import requests
 from urllib.parse import unquote
 import random
 import os
+from flask import Flask, session, flash
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
+import _mysql_connector
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'  # Needed for session management
+app.secret_key = 'cat'  # Needed for session management
 
 # Replace with your Spoonacular API key
 API_KEY = '42a784a1e60942739e09c9684472e3c9'
+
+db_config = {
+    "host": "localhost",
+    "user": "root",
+    "password": "Ramish@62",
+    "database": "user"
+    
+}
+
+def get_db_connection():
+    return _mysql_connector.connect(**db_config)
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
